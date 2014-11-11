@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:weightSum="1">
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtReminderDesc"
+            android:hint="What do you want to remember?"
+            android:gravity="center_vertical|center_horizontal"
+            android:inputType="textCapSentences"
+            android:background="@color/cardview_light_background"
+            android:textSize="24dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            />
+
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#ffeeeeee" />
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remind me!"
+            android:id="@+id/btnCreateReminder"
+            android:textColor="@color/button_material_light"
+            android:paddingBottom="5dp"
+            android:textSize="30dp"/>
+
+</LinearLayout>

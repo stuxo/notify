@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<style name="MyAppTheme" parent="AppTheme.Base"/>
+
+<style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">@color/brightblue</item>
+    <item name="colorPrimaryDark">@color/primary_material_dark</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="windowActionBar">false</item>
+    <item name="actionBarStyle">@android:style/Theme.Holo.Light</item>
+    <item name="android:windowBackground">@color/brightblue</item>
+    <item name="android:windowTranslucentStatus">true</item>
+    <item name="android:editTextStyle">@style/RobotoEditTextStyle</item>
+    <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
+
+</style>
+
+    <style name="RobotoEditTextStyle" parent="android:Widget.Holo.Light.EditText">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button.Borderless">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+
+    <style name="RobotoActionBarStyle" parent="android:style/Theme.Holo.Light">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+</resources>
