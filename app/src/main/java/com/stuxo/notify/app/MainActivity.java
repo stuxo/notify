@@ -1,18 +1,21 @@
 package com.stuxo.notify.app;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import com.stuxo.notify.controller.ToDoListAdapter;
 import com.stuxo.notify.model.ToDoItem;
 
 import java.util.ArrayList;
@@ -22,8 +25,10 @@ public class MainActivity extends ActionBarActivity {
 
     private Button btnCreateNotification;
     private EditText txtNotificationDescription;
-    public static final String KEY_DONE = "com.stuxo.notify.MainActivity.clearNotification";
     public ArrayList<ToDoItem> ToDoItems;
+    private ListView toDoLV;
+    private ToDoListAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,18 @@ public class MainActivity extends ActionBarActivity {
 
         ToDoItems = new ArrayList<ToDoItem>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        LayoutInflater inflater = (LayoutInflater)   getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        LinearLayout mContainer = (LinearLayout) inflater.inflate(R.layout.to_do_list_list_view, null);
+        toDoLV = (ListView) mContainer.findViewById(R.id.listview);
+
+
+        adapter = new ToDoListAdapter(getApplicationContext(), ToDoItems);
+
+
+        toDoLV.setAdapter(adapter);
+
 
         setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(
@@ -48,28 +65,29 @@ public class MainActivity extends ActionBarActivity {
 
         btnCreateNotification = (Button) findViewById(R.id.btnCreateReminder);
         txtNotificationDescription = (EditText) findViewById(R.id.txtReminderDesc);
+
         btnCreateNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                ToDoItem newItem = new ToDoItem(txtNotificationDescription.getText().toString());
 
-                //
-                ToDoItems.add(new ToDoItem(txtNotificationDescription.getText().toString()));
+                ToDoItems.add(newItem);
 
-//                int temp = NotificationId.createId();
-//                Intent intent = new Intent();
-//                intent.setAction(KEY_DONE);
-//                intent.setClass(getApplicationContext(), NotificationActionReceiver.class);
-//
-//                PendingIntent doneIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-//
-//                Notification notification = createBasicNotification("Don't forget!", txtNotificationDescription.getText().toString(), doneIntent);
-//
-//                notification.extras.putInt("Id", temp);
-//                displayNotification(notification, temp);
+                txtNotificationDescription.setText("");
+
+               // toDoLV.addView();
+
+
             }
         });
+
+
+
+
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,9 +128,9 @@ public class MainActivity extends ActionBarActivity {
         return notification;
     }
 
-    private void displayNotification(Notification notification, int id) {
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notification.extras.putInt("Id",id);
-        notificationManager.notify(id, notification);
-    }
+//    private void displayNotification(Notification notification, int id) {
+//        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+//        notification.extras.putInt("Id",id);
+//        notificationManager.notify(id, notification);
+//    }
 }
