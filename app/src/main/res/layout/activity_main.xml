@@ -29,7 +29,7 @@
                         />
             </android.support.v7.widget.CardView>
 
-
+            <include layout="@layout/to_do_list_list_view" />
         </LinearLayout>
 
     <!--</android.support.v4.widget.DrawerLayout>-->
