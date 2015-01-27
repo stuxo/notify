@@ -2,18 +2,15 @@ package com.stuxo.notify.app;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import com.stuxo.notify.controller.ToDoListAdapter;
 import com.stuxo.notify.model.ToDoItem;
@@ -35,20 +32,14 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ToDoItems = new ArrayList<ToDoItem>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        LayoutInflater inflater = (LayoutInflater)   getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        LinearLayout mContainer = (LinearLayout) inflater.inflate(R.layout.to_do_list_list_view, null);
-        toDoLV = (ListView) mContainer.findViewById(R.id.listview);
-
-
+        ToDoItems = new ArrayList<ToDoItem>();
         adapter = new ToDoListAdapter(getApplicationContext(), ToDoItems);
 
-
+        toDoLV = (ListView) findViewById(R.id.listview);
         toDoLV.setAdapter(adapter);
-
 
         setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(
@@ -76,16 +67,10 @@ public class MainActivity extends ActionBarActivity {
 
                 txtNotificationDescription.setText("");
 
-               // toDoLV.addView();
-
+                adapter.notifyDataSetChanged();
 
             }
         });
-
-
-
-
-
     }
 
 
