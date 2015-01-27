@@ -48,8 +48,9 @@ public class ToDoListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         ViewHolder holder;
+
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.to_do_item, null);
+            convertView = mInflater.inflate(R.layout.to_do_item, parent, false);
             holder = new ViewHolder();
             holder.desc = (TextView) convertView.findViewById(R.id.toDoItemDescEditText);
             holder.done = (CheckBox) convertView.findViewById(R.id.toDoItemDoneCheckBox);
