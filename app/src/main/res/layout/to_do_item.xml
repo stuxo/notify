@@ -1,12 +1,25 @@
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-    <RelativeLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:weightSum="1">
+
+    <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-        
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="4dp">
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:inputType="textMultiLine"
+                android:textColor="@color/material_deep_teal_200"
+
+                android:text="This is a long asdoaisdij asdias iufhduf asdufhasoudif safduihsdfiu sdafuisadfiusadf sudfhsdfiusdfusidof sduif"
+                android:id="@+id/toDoItemDescEditText" android:layout_gravity="left|center_vertical"/>
         <CheckBox
                 android:layout_width="80dp"
                 android:layout_height="50dp"
@@ -15,20 +28,5 @@
                 android:id="@+id/toDoItemDoneCheckBox" android:layout_gravity="right|center_vertical"
                 android:checked="false" android:layout_alignParentTop="true" android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"/>
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_toLeftOf="@+id/toDoItemDoneCheckBox"
-                android:layout_height="fill_parent">
-            <EditText
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:inputType="textMultiLine"
-                    android:textColor="@color/material_deep_teal_200"
-
-                    android:text="This is a long"
-                    android:id="@+id/toDoItemDescEditText" android:layout_gravity="left|center_vertical"/>
-        </LinearLayout>
-    </RelativeLayout>
-</FrameLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
