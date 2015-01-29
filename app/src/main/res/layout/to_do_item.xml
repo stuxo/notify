@@ -2,7 +2,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:weightSum="1">
+              android:weightSum="1" android:background="@color/brightblue">
 
     <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -10,7 +10,9 @@
             android:layout_gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            card_view:cardCornerRadius="4dp">
+            card_view:cardCornerRadius="1dp" android:elevation="8dp"
+
+            >
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
@@ -19,25 +21,22 @@
             <EditText
                     android:layout_width="294dp"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:inputType="textMultiLine"
+                    android:gravity="start|left"
+                    android:inputType="textAutoCorrect"
                     android:textColor="@color/primary_dark_material_dark"
                     android:background="@android:color/transparent"
-                    android:text="This is a long asdoaisdij asdias iufhduf asdufhasoudif safduihsdfiu sdafuisadfiusadf sudfhsdfiusdfusidof sduif"
-                    android:id="@+id/toDoItemDescEditText" android:layout_weight="1" android:layout_gravity="left"
-                    android:autoText="true" android:textAlignment="textStart"/>
+                    android:text="This is a long text siudfajdsif siufd sadfiu sdfiu sadiufj sdif sdiufjisdfu sdfi sdfiji"
+                    android:id="@+id/toDoItemDescEditText" android:layout_weight="1" android:layout_gravity="center_vertical|left"
+                    android:textAlignment="textStart" android:paddingLeft="5dp"/>
             <CheckBox
                     android:layout_width="80dp"
                     android:layout_height="50dp"
-                    android:textColor="@color/primary_dark_material_dark"
+                    android:textColor="@color/bright_foreground_material_light"
                     android:gravity="center_vertical"
                     android:text="Done"
                     android:id="@+id/toDoItemDoneCheckBox"
-                    android:layout_gravity="right|center_vertical"
                     android:checked="false"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" android:buttonTint="@color/background_material_dark"/>
+                    android:buttonTint="@color/brightblue"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
