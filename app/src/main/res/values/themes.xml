@@ -3,13 +3,14 @@
 <style name="MyAppTheme" parent="AppTheme.Base"/>
 
 <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="colorPrimary">@color/brightorange</item>
-    <item name="colorPrimaryDark">@color/primary_material_dark</item>
+    <item name="colorPrimary">@color/brightblue</item>
+    <item name="colorPrimaryDark">@color/darkblue</item>
     <item name="android:windowNoTitle">true</item>
     <item name="windowActionBar">false</item>
     <item name="actionBarStyle">@android:style/Theme.Holo.Light</item>
-    <item name="android:windowBackground">@color/brightorange</item>
+    <item name="android:windowBackground">?attr/colorPrimaryDark</item>
     <item name="android:windowTranslucentStatus">true</item>
+    <item name="android:windowContentOverlay">@null</item>
     <item name="android:editTextStyle">@style/RobotoEditTextStyle</item>
     <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
 

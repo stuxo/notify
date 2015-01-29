@@ -2,4 +2,6 @@
 <resources>
     <color name="brightblue">#5677fc</color>
     <color name="brightorange">#D84315</color>
+    <color name="darkblue">#334797</color>
+
 </resources>
