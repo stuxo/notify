@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.stuxo.notify.controller.ToDoListAdapter;
 import com.stuxo.notify.model.ToDoItem;
 
@@ -61,14 +62,19 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                ToDoItem newItem = new ToDoItem(txtNotificationDescription.getText().toString());
+                if (txtNotificationDescription.getText().toString().trim().length() != 0){
+                    ToDoItem newItem = new ToDoItem(txtNotificationDescription.getText().toString());
 
-                ToDoItems.add(newItem);
+                    ToDoItems.add(newItem);
 
-                txtNotificationDescription.setText("");
+                    txtNotificationDescription.setText("");
 
-                adapter.notifyDataSetChanged();
-
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "I'm not going to remind you that...", Toast.LENGTH_LONG).show();
+                    txtNotificationDescription.setText("");
+                }
             }
         });
     }
