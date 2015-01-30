@@ -27,7 +27,7 @@
                     android:background="@android:color/transparent"
                     android:text="This is a long text siudfajdsif siufd sadfiu sdfiu sadiufj sdif sdiufjisdfu sdfi sdfiji"
                     android:id="@+id/toDoItemDescEditText" android:layout_weight="1" android:layout_gravity="center_vertical|left"
-                    android:textAlignment="textStart" android:paddingLeft="5dp"/>
+                    android:textAlignment="textStart" android:paddingLeft="5dp" android:longClickable="false"/>
             <CheckBox
                     android:layout_width="80dp"
                     android:layout_height="50dp"
