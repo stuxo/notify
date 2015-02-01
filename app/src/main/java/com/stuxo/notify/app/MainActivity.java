@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.stuxo.notify.controller.ToDoListAdapter;
 import com.stuxo.notify.model.ToDoItem;
 
@@ -25,12 +29,15 @@ public class MainActivity extends ActionBarActivity {
     private EditText txtNotificationDescription;
     public ArrayList<ToDoItem> ToDoItems;
     private ListView toDoLV;
+    Firebase myFirebaseRef;
     private ToDoListAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
+        myFirebaseRef = new Firebase("https://blazing-heat-2528.firebaseio.com/");
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -52,6 +59,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
 
+
         // Inflate a menu to be displayed in the toolbar
         toolbar.inflateMenu(R.menu.menu_main);
 
@@ -62,23 +70,43 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                if (txtNotificationDescription.getText().toString().trim().length() != 0){
-                    ToDoItem newItem = new ToDoItem(txtNotificationDescription.getText().toString());
-
-                    ToDoItems.add(newItem);
-
-                    txtNotificationDescription.setText("");
-
-                    adapter.notifyDataSetChanged();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "I'm not going to remind you that...", Toast.LENGTH_LONG).show();
-                    txtNotificationDescription.setText("");
-                }
+               addToDoTitemToList();
             }
         });
     }
 
+    private void addToDoTitemToList(){
+        if (txtNotificationDescription.getText().toString().trim().length() != 0){
+            ToDoItem newItem = new ToDoItem(txtNotificationDescription.getText().toString());
+
+            ToDoItems.add(newItem);
+
+            addFirebaseListener(newItem);
+            txtNotificationDescription.setText("");
+
+            adapter.notifyDataSetChanged();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "I'm not going to remind you that...", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void addFirebaseListener(ToDoItem item){
+        myFirebaseRef.child("Notification" + item.getId()).setValue(item);
+
+        myFirebaseRef.child("message").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                ToDoItems.add((ToDoItem)snapshot.getValue());
+//                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override public void onCancelled(FirebaseError error) { }
+
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,6 +146,13 @@ public class MainActivity extends ActionBarActivity {
 
         return notification;
     }
+
+    public void onResume() {
+        super.onResume();
+
+
+        }
+
 
 //    private void displayNotification(Notification notification, int id) {
 //        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
