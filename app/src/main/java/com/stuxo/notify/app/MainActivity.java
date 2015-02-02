@@ -70,12 +70,12 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-               addToDoTitemToList();
+               addToDoItemToList();
             }
         });
     }
 
-    private void addToDoTitemToList(){
+    private void addToDoItemToList(){
         if (txtNotificationDescription.getText().toString().trim().length() != 0){
             ToDoItem newItem = new ToDoItem(txtNotificationDescription.getText().toString());
 
