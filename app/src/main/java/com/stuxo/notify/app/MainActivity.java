@@ -150,7 +150,11 @@ public class MainActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
 
+            //query firebase for the existing notifications
 
+            //add them to the list
+
+            //notify adapter
         }
 
 
