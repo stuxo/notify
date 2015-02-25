@@ -16,10 +16,6 @@ public class ToDoItem{
         alarmTime = null;
     }
 
-    public void setIsComplete(boolean isComplete){
-        this.isComplete = isComplete;
-    }
-
     public boolean getIsComplete(){
         return isComplete;
     }
@@ -31,6 +27,19 @@ public class ToDoItem{
     public String getText(){
         return text;
     }
+
+    public void setId(int id){
+        Id = id;
+    }
+
+    public void setText(String text){
+        this.text = text;
+    }
+
+    public void setIsComplete(boolean isComplete){
+        this.isComplete = isComplete;
+    }
+
 //
 //    public void createNotification(){
 //                        Intent intent = new Intent();
