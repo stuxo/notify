@@ -3,20 +3,22 @@ package com.stuxo.notify.app;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-import com.firebase.client.*;
 import com.stuxo.notify.controller.ToDoListAdapter;
 import com.stuxo.notify.model.ToDoItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,19 +28,18 @@ public class MainActivity extends ActionBarActivity {
     private EditText txtNotificationDescription;
     public ArrayList<ToDoItem> ToDoItems;
     private ListView toDoLV;
-    Firebase myFirebaseRef;
-    Firebase toDoRef;
-    Firebase userRef;
     private boolean isAuthed;
     private String userName;
+    SQLiteDatabase db;
     public static final String PREFS_NAME = "NotifyPrefs";
+    public static final String dbName = "notify";
+
 
     private ToDoListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Firebase.setAndroidContext(this);
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
@@ -49,36 +50,7 @@ public class MainActivity extends ActionBarActivity {
         editor.putBoolean("isLoggedIn", false);
 
 
-        myFirebaseRef = new Firebase("https://blazing-heat-2528.firebaseio.com/");;
-        AuthData authData = myFirebaseRef.getAuth();
-
-        myFirebaseRef.authWithPassword("stuart.simmons0@gmail.com", "password",
-                new Firebase.AuthResultHandler() {
-                    @Override
-                    public void onAuthenticated(AuthData authData) {
-                        // Authentication just completed successfully :)
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put("provider", authData.getProvider());
-                        if(authData.getProviderData().containsKey("id")) {
-                            map.put("provider_id", authData.getProviderData().get("id").toString());
-                        }
-                        if(authData.getProviderData().containsKey("displayName")) {
-                            map.put("displayName", authData.getProviderData().get("displayName").toString());
-                        }
-
-                        myFirebaseRef.child("users").child(authData.getUid()).setValue(map);
-
-                    }
-
-                    @Override
-                    public void onAuthenticationError(FirebaseError error) {
-                        // Something went wrong :(
-                    }
-                });
-
-        //handler is initialised, but auth never takes place. Need to handle user creation thru menu, also the key pairs for user
-
-        //toDoRef = myFirebaseRef.child("users").child(userName).child("ToDoItems");
+        //db = this.openOrCreateDatabase(dbName, MODE_PRIVATE, null);
 
         setContentView(R.layout.activity_main);
 
@@ -113,18 +85,27 @@ public class MainActivity extends ActionBarActivity {
                 addToDoItemToList();
             }
         });
-        //getExistingItems();
     }
 
 
 
     private void addToDoItemToList() {
         if (txtNotificationDescription.getText().toString().trim().length() != 0) {
-            ToDoItem newItem = new ToDoItem(txtNotificationDescription.getText().toString());
+            ToDoItem newItem = new ToDoItem();
+            newItem.setText(txtNotificationDescription.getText().toString().trim());
 
-            ToDoItems.add(newItem);
+            if(ToDoItems != null){
+                ToDoItems.add(newItem);
+            }else{
+                ToDoItems = new ArrayList<>();
+                ToDoItems.add(newItem);
+            }
 
-            toDoRef.setValue(ToDoItems);
+            try {
+                newItem.save();
+            }catch(Exception e){
+                Log.d("dbsave", e.toString());
+            }
 
             txtNotificationDescription.setText("");
 
@@ -190,55 +171,20 @@ public class MainActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
 
-        //getExistingItems();
+        getExistingItems();
 
     }
 
     private void getExistingItems(){
-        toDoRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                for (DataSnapshot item : dataSnapshot.getChildren()) {
-
-                    ToDoItem todo = new ToDoItem(item.child("text").getValue(String.class));
-                    todo.setId((item.child("id").getValue(int.class)));
-                    todo.setIsComplete((item.child("isComplete").getValue(Boolean.class)));
-                    ToDoItems.add(todo);
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-            // ....
-        });
+        List<ToDoItem> toDoItems = ToDoItem.listAll(ToDoItem.class);
+        ToDoItems.addAll(toDoItems);
+        //show today's "Done" items
+        adapter.notifyDataSetChanged();
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        ToDoItems = null;
-        if (myFirebaseRef != null){
-            myFirebaseRef.unauth();
-        }
-        Toast.makeText(getApplicationContext(), "User logged out", Toast.LENGTH_LONG).show();
     }
 }
