@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -17,16 +19,15 @@ import com.stuxo.notify.controller.ToDoListAdapter;
 import com.stuxo.notify.model.ToDoItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private Button btnCreateNotification;
     private EditText txtNotificationDescription;
-    public ArrayList<ToDoItem> ToDoItems;
+    public ArrayList<ToDoItem> ToDoItems = new ArrayList<>();
+
     private ListView toDoLV;
     private boolean isAuthed;
     private String userName;
@@ -34,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
     public static final String PREFS_NAME = "NotifyPrefs";
     public static final String dbName = "notify";
 
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private ToDoListAdapter adapter;
 
@@ -56,19 +58,33 @@ public class MainActivity extends ActionBarActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        ToDoItems = new ArrayList<ToDoItem>();
-        adapter = new ToDoListAdapter(getApplicationContext(), ToDoItems);
+        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
 
-        toDoLV = (ListView) findViewById(R.id.listview);
-        toDoLV.setAdapter(adapter);
+        recList.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        recList.setLayoutManager(mLayoutManager);
+
+
+        adapter = new ToDoListAdapter(ToDoItems);
+
+        recList.setAdapter(adapter);
 
         setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        // Handle the menu item
-                        return true;
+
+                        switch (item.getItemId()) {
+                            case R.id.action_clear_all:
+                                ToDoItem.deleteAll(ToDoItem.class);
+                                ToDoItems.clear();
+                                adapter.notifyDataSetChanged();
+                                return true;
+                            default:
+                                return true;
+                        }
                     }
                 });
 
@@ -177,7 +193,11 @@ public class MainActivity extends ActionBarActivity {
 
     private void getExistingItems(){
         List<ToDoItem> toDoItems = ToDoItem.listAll(ToDoItem.class);
-        ToDoItems.addAll(toDoItems);
+        for (ToDoItem item : toDoItems){
+            if (!ToDoItems.contains(item)){
+                toDoItems.add(item);
+            }
+        }
         //show today's "Done" items
         adapter.notifyDataSetChanged();
 

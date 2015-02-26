@@ -1,10 +1,9 @@
 package com.stuxo.notify.controller;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import com.stuxo.notify.app.R;
@@ -15,59 +14,45 @@ import java.util.ArrayList;
 /**
  * Created by stu on 13/11/14.
  */
-public class ToDoListAdapter extends BaseAdapter {
+public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHolder> {
 
     private static ArrayList<ToDoItem> items;
 
-    private LayoutInflater mInflater;
 
-    public ToDoListAdapter(Context context, ArrayList<ToDoItem> results) {
+    public ToDoListAdapter(ArrayList<ToDoItem> results) {
         items = results;
-        mInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public int getCount() {
-        // TODO Auto-generated method stub
+    public int getItemCount() {
         return items.size();
     }
 
     @Override
-    public Object getItem(int arg0) {
-        // TODO Auto-generated method stub
-        return items.get(arg0);
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater.
+                from(viewGroup.getContext()).
+                inflate(R.layout.to_do_item, viewGroup, false);
+
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public long getItemId(int arg0) {
-        // TODO Auto-generated method stub
-        return arg0;
+    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+        ToDoItem item = items.get(i);
+        viewHolder.desc.setText(item.getText());
+        viewHolder.done.setChecked(item.getIsComplete());
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
-        ViewHolder holder;
 
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.to_do_item, parent, false);
-            holder = new ViewHolder();
-            holder.desc = (TextView) convertView.findViewById(R.id.toDoItemDescEditText);
-            holder.done = (CheckBox) convertView.findViewById(R.id.toDoItemDoneCheckBox);
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        protected TextView desc;
+        protected CheckBox done;
 
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
+        public ViewHolder(View v) {
+            super(v);
+            desc = (TextView) v.findViewById(R.id.toDoItemDescEditText);
+            done = (CheckBox) v.findViewById(R.id.toDoItemDoneCheckBox);
         }
-
-        holder.desc.setText(items.get(position).getText());
-        holder.done.setChecked(items.get(position).getIsComplete());
-
-        return convertView;
-    }
-
-    static class ViewHolder {
-        TextView desc;
-        CheckBox done;
     }
 }
