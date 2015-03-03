@@ -11,11 +11,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.stuxo.notify.controller.ToDoListAdapter;
+import com.stuxo.notify.listeners.SwipeableRecyclerViewTouchListener;
 import com.stuxo.notify.model.ToDoItem;
 
 import java.util.ArrayList;
@@ -70,6 +72,37 @@ public class MainActivity extends ActionBarActivity {
 
         recList.setAdapter(adapter);
 
+        SwipeableRecyclerViewTouchListener swipeTouchListener =
+                new SwipeableRecyclerViewTouchListener(recList,
+                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                            @Override
+                            public boolean canSwipe(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    ToDoItems.get(position).delete();
+                                    ToDoItems.remove(position);
+                                    adapter.notifyItemRemoved(position);
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    ToDoItems.get(position).delete();
+                                    ToDoItems.remove(position);
+                                    adapter.notifyItemRemoved(position);
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+        recList.addOnItemTouchListener(swipeTouchListener);
+
         setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
@@ -93,6 +126,15 @@ public class MainActivity extends ActionBarActivity {
 
         btnCreateNotification = (Button) findViewById(R.id.btnCreateReminder);
         txtNotificationDescription = (EditText) findViewById(R.id.txtReminderDesc);
+
+        txtNotificationDescription.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    btnCreateNotification.performClick();
+                }
+                return false;
+            }
+        });
 
         btnCreateNotification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,20 +170,6 @@ public class MainActivity extends ActionBarActivity {
             adapter.notifyDataSetChanged();
         } else {
             Toast.makeText(getApplicationContext(), "I'm not going to remind you that...", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    //call from xml, need to set the object boolean too
-    public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-
-        // Check which checkbox was clicked
-        switch(view.getId()) {
-            case R.id.toDoItemDoneCheckBox:
-                if (checked) {
-
-                }
         }
     }
 
@@ -193,13 +221,11 @@ public class MainActivity extends ActionBarActivity {
 
     private void getExistingItems(){
         List<ToDoItem> toDoItems = ToDoItem.listAll(ToDoItem.class);
-        for (ToDoItem item : toDoItems){
-            if (!ToDoItems.contains(item)){
-                toDoItems.add(item);
-            }
+        if (ToDoItems.size() == 0){
+            ToDoItems.addAll(toDoItems);
+            adapter.notifyDataSetChanged();
         }
-        //show today's "Done" items
-        adapter.notifyDataSetChanged();
+        //show today's "Done" items, settings menu
 
     }
 

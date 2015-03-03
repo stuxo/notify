@@ -13,7 +13,8 @@
             android:id="@+id/txtReminderDesc"
             android:hint="What do you want to remember?"
             android:gravity="center_vertical|center_horizontal"
-            android:inputType="textCapSentences"
+            android:inputType="textAutoCorrect|textCapSentences"
+            android:imeOptions="actionGo"
             android:background="?attr/colorPrimary"
             android:textSize="24dp"
             android:paddingTop="10dp"
@@ -23,11 +24,13 @@
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:theme="@style/Base.Widget.AppCompat.ActionButton"
             android:text="Remind me!"
-            android:background="?attr/colorPrimary"
             android:id="@+id/btnCreateReminder"
             android:textColor="@color/button_material_light"
+            android:elevation="10dp"
             android:paddingBottom="5dp"
-            android:textSize="30dp"/>
+            android:textSize="30dp"
+            />
 
 </LinearLayout>

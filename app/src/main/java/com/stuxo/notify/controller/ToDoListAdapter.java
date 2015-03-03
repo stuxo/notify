@@ -14,10 +14,9 @@ import java.util.ArrayList;
 /**
  * Created by stu on 13/11/14.
  */
-public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHolder> {
+public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHolder>{
 
     private static ArrayList<ToDoItem> items;
-
 
     public ToDoListAdapter(ArrayList<ToDoItem> results) {
         items = results;
@@ -38,7 +37,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         ToDoItem item = items.get(i);
         viewHolder.desc.setText(item.getText());
         viewHolder.done.setChecked(item.getIsComplete());

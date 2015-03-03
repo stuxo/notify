@@ -15,7 +15,7 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@color/background_material_light">
+                android:background="@color/brightblue">
 
             <include layout="@layout/toolbar" />
 
@@ -28,6 +28,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true">
             </android.support.v7.widget.RecyclerView>
+
 
 
         </LinearLayout>
