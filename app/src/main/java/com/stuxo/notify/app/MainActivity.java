@@ -2,110 +2,175 @@ package com.stuxo.notify.app;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import android.widget.*;
 import com.stuxo.notify.controller.ToDoListAdapter;
+import com.stuxo.notify.listeners.SwipeableRecyclerViewTouchListener;
 import com.stuxo.notify.model.ToDoItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private Button btnCreateNotification;
     private EditText txtNotificationDescription;
-    public ArrayList<ToDoItem> ToDoItems;
+    public ArrayList<ToDoItem> ToDoItems = new ArrayList<>();
+
     private ListView toDoLV;
-    Firebase myFirebaseRef;
+    private boolean isAuthed;
+    private String userName;
+    SQLiteDatabase db;
+    public static final String PREFS_NAME = "NotifyPrefs";
+    public static final String dbName = "notify";
+
+    private RecyclerView.LayoutManager mLayoutManager;
+
     private ToDoListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Firebase.setAndroidContext(this);
-        myFirebaseRef = new Firebase("https://blazing-heat-2528.firebaseio.com/");
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
+        if (settings.getBoolean("isFirstLaunch", false)){
+
+        }
+        editor.putBoolean("isLoggedIn", false);
+
+
+        //db = this.openOrCreateDatabase(dbName, MODE_PRIVATE, null);
 
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
 
-        ToDoItems = new ArrayList<ToDoItem>();
-        adapter = new ToDoListAdapter(getApplicationContext(), ToDoItems);
+        recList.setHasFixedSize(true);
 
-        toDoLV = (ListView) findViewById(R.id.listview);
-        toDoLV.setAdapter(adapter);
+        mLayoutManager = new LinearLayoutManager(this);
+        recList.setLayoutManager(mLayoutManager);
+
+
+        adapter = new ToDoListAdapter(ToDoItems);
+
+        recList.setAdapter(adapter);
+
+        SwipeableRecyclerViewTouchListener swipeTouchListener =
+                new SwipeableRecyclerViewTouchListener(recList,
+                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                            @Override
+                            public boolean canSwipe(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    ToDoItems.get(position).delete();
+                                    ToDoItems.remove(position);
+                                    adapter.notifyItemRemoved(position);
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    ToDoItems.get(position).delete();
+                                    ToDoItems.remove(position);
+                                    adapter.notifyItemRemoved(position);
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+        recList.addOnItemTouchListener(swipeTouchListener);
 
         setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        // Handle the menu item
-                        return true;
+
+                        switch (item.getItemId()) {
+                            case R.id.action_clear_all:
+                                ToDoItem.deleteAll(ToDoItem.class);
+                                ToDoItems.clear();
+                                adapter.notifyDataSetChanged();
+                                return true;
+                            default:
+                                return true;
+                        }
                     }
                 });
 
-
-        // Inflate a menu to be displayed in the toolbar
+           // Inflate a menu to be displayed in the toolbar
         toolbar.inflateMenu(R.menu.menu_main);
 
         btnCreateNotification = (Button) findViewById(R.id.btnCreateReminder);
         txtNotificationDescription = (EditText) findViewById(R.id.txtReminderDesc);
 
+        txtNotificationDescription.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    btnCreateNotification.performClick();
+                }
+                return false;
+            }
+        });
+
         btnCreateNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-               addToDoItemToList();
+                addToDoItemToList();
             }
         });
     }
 
-    private void addToDoItemToList(){
-        if (txtNotificationDescription.getText().toString().trim().length() != 0){
-            ToDoItem newItem = new ToDoItem(txtNotificationDescription.getText().toString());
 
-            ToDoItems.add(newItem);
 
-            addFirebaseListener(newItem);
+    private void addToDoItemToList() {
+        if (txtNotificationDescription.getText().toString().trim().length() != 0) {
+            ToDoItem newItem = new ToDoItem();
+            newItem.setText(txtNotificationDescription.getText().toString().trim());
+
+            if(ToDoItems != null){
+                ToDoItems.add(newItem);
+            }else{
+                ToDoItems = new ArrayList<>();
+                ToDoItems.add(newItem);
+            }
+
+            try {
+                newItem.save();
+            }catch(Exception e){
+                Log.d("dbsave", e.toString());
+            }
+
             txtNotificationDescription.setText("");
 
             adapter.notifyDataSetChanged();
-        }
-        else {
+        } else {
             Toast.makeText(getApplicationContext(), "I'm not going to remind you that...", Toast.LENGTH_LONG).show();
         }
-    }
-
-    private void addFirebaseListener(ToDoItem item){
-        myFirebaseRef.child("Notification" + item.getId()).setValue(item);
-
-        myFirebaseRef.child("message").addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                ToDoItems.add((ToDoItem)snapshot.getValue());
-//                adapter.notifyDataSetChanged();
-
-            }
-
-            @Override public void onCancelled(FirebaseError error) { }
-
-        });
     }
 
     @Override
@@ -150,17 +215,22 @@ public class MainActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
 
-            //query firebase for the existing notifications
+        getExistingItems();
 
-            //add them to the list
+    }
 
-            //notify adapter
+    private void getExistingItems(){
+        List<ToDoItem> toDoItems = ToDoItem.listAll(ToDoItem.class);
+        if (ToDoItems.size() == 0){
+            ToDoItems.addAll(toDoItems);
+            adapter.notifyDataSetChanged();
         }
+        //show today's "Done" items, settings menu
 
+    }
 
-//    private void displayNotification(Notification notification, int id) {
-//        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-//        notification.extras.putInt("Id",id);
-//        notificationManager.notify(id, notification);
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }

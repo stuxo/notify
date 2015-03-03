@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:background="?attr/colorPrimary"
               android:weightSum="1">
 
@@ -13,26 +13,24 @@
             android:id="@+id/txtReminderDesc"
             android:hint="What do you want to remember?"
             android:gravity="center_vertical|center_horizontal"
-            android:inputType="textCapSentences"
+            android:inputType="textAutoCorrect|textCapSentences"
+            android:imeOptions="actionGo"
             android:background="?attr/colorPrimary"
             android:textSize="24dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             />
 
-    <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="?attr/colorPrimary"
-            />
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:theme="@style/Base.Widget.AppCompat.ActionButton"
             android:text="Remind me!"
-            android:background="?attr/colorPrimary"
             android:id="@+id/btnCreateReminder"
             android:textColor="@color/button_material_light"
+            android:elevation="10dp"
             android:paddingBottom="5dp"
-            android:textSize="30dp"/>
+            android:textSize="30dp"
+            />
 
 </LinearLayout>

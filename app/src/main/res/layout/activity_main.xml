@@ -15,26 +15,24 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@color/background_material_light">
+                android:background="@color/brightblue">
 
             <include layout="@layout/toolbar" />
 
-            <android.support.v7.widget.CardView
-                    android:id="@+id/reminder_card_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true">
-                <include layout="@layout/add_single_reminder"
-                        />
-            </android.support.v7.widget.CardView>
+            <include layout="@layout/add_single_reminder"/>
 
-            <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-                      android:id="@+id/listview"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/cardList"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true">
+            </android.support.v7.widget.RecyclerView>
+
+
 
         </LinearLayout>
 
     <!--</android.support.v4.widget.DrawerLayout>-->
 </FrameLayout>
+

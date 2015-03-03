@@ -1,36 +1,47 @@
 package com.stuxo.notify.model;
 
+import com.orm.SugarRecord;
+
 import java.util.Date;
 
-public class ToDoItem{
+public class ToDoItem extends SugarRecord<ToDoItem> {
 
     private int Id;
     private String text;
     private boolean isComplete;
-    private Date alarmTime;
+    //private Date alarmTime;
 
-    public ToDoItem(String text){
-        Id = NotificationId.createId();
-        this.text = text;
-        this.isComplete = false;
-        alarmTime = null;
-    }
-
-    public void setIsComplete(boolean isComplete){
-        this.isComplete = isComplete;
-    }
+//    public ToDoItem(String text){
+//        Id = NotificationId.createId();
+//        this.text = text;
+//        this.isComplete = false;
+//       // alarmTime = null;
+//    }
 
     public boolean getIsComplete(){
         return isComplete;
     }
 
-    public int getId(){
+    public int getToDoId(){
         return Id;
     }
 
     public String getText(){
         return text;
     }
+
+    public void setId(int id){
+        Id = id;
+    }
+
+    public void setText(String text){
+        this.text = text;
+    }
+
+    public void setIsComplete(boolean isComplete){
+        this.isComplete = isComplete;
+    }
+
 //
 //    public void createNotification(){
 //                        Intent intent = new Intent();
