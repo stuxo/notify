@@ -8,7 +8,7 @@ import android.content.Intent;
 /**
  * Created by stu on 1/11/14.
  */
-public class NotificationActionReceiver extends BroadcastReceiver {
+class NotificationActionReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

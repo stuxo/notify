@@ -14,6 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by stu on 13/11/14.
  */
+@SuppressWarnings("ALL")
 public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHolder>{
 
     private static ArrayList<ToDoItem> items;
@@ -45,8 +46,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected TextView desc;
-        protected CheckBox done;
+        TextView desc;
+        CheckBox done;
 
         public ViewHolder(View v) {
             super(v);

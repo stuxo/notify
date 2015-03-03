@@ -16,6 +16,10 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.0.0"
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         applicationId "com.stuxo.notify.app"
         minSdkVersion 16

@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by stu on 1/11/14.
  */
-public class NotificationId {
+class NotificationId {
     private final static AtomicInteger c = new AtomicInteger(0);
     public static int createId() {
         return c.incrementAndGet();

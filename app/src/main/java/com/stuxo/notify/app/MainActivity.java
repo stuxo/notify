@@ -24,20 +24,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+class MainActivity extends ActionBarActivity {
 
     private Button btnCreateNotification;
     private EditText txtNotificationDescription;
-    public ArrayList<ToDoItem> ToDoItems = new ArrayList<>();
+    private ArrayList<ToDoItem> ToDoItems = new ArrayList<>();
 
     private ListView toDoLV;
     private boolean isAuthed;
     private String userName;
     SQLiteDatabase db;
-    public static final String PREFS_NAME = "NotifyPrefs";
+    private static final String PREFS_NAME = "NotifyPrefs";
     public static final String dbName = "notify";
-
-    private RecyclerView.LayoutManager mLayoutManager;
 
     private ToDoListAdapter adapter;
 
@@ -64,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
 
         recList.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recList.setLayoutManager(mLayoutManager);
 
 
@@ -199,7 +197,7 @@ public class MainActivity extends ActionBarActivity {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
 
 
-        Notification notification = builder
+        return builder
                 .setSmallIcon(R.drawable.ic_action_done)
                 .setContentIntent(pIntent)
                 .setContentTitle(title)
@@ -208,8 +206,6 @@ public class MainActivity extends ActionBarActivity {
                 .addAction(R.drawable.ic_action_time, "10min", pIntent)
                 .addAction(R.drawable.ic_action_alarms, "1hr", pIntent)
                 .build();
-
-        return notification;
     }
 
     public void onResume() {
@@ -229,8 +225,4 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 }
