@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity {
 
     private Button btnCreateNotification;
     private EditText txtNotificationDescription;
@@ -216,13 +217,20 @@ class MainActivity extends ActionBarActivity {
     }
 
     private void getExistingItems(){
-        List<ToDoItem> toDoItems = ToDoItem.listAll(ToDoItem.class);
-        if (ToDoItems.size() == 0){
-            ToDoItems.addAll(toDoItems);
-            adapter.notifyDataSetChanged();
-        }
-        //show today's "Done" items, settings menu
 
+        try {
+            List<ToDoItem> toDoItems = ToDoItem.listAll(ToDoItem.class);
+            if (ToDoItems.size() == 0) {
+                ToDoItems.addAll(toDoItems);
+                adapter.notifyDataSetChanged();
+            }
+            //show today's "Done" items, settings menu
+        }
+        catch (SQLiteException e){
+            if (e.getMessage().toString().contains("no such table")){
+
+            }
+        }
     }
 
 }
