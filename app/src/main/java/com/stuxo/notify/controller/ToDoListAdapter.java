@@ -42,6 +42,15 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         ToDoItem item = items.get(i);
         viewHolder.desc.setText(item.getText());
         viewHolder.done.setChecked(item.getIsComplete());
+        viewHolder.done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToDoItem item = items.get(i);
+                CheckBox done = (CheckBox) v.findViewById(R.id.toDoItemDoneCheckBox);
+                item.setIsComplete(done.isChecked());
+
+            }
+        });
     }
 
 

@@ -2,7 +2,6 @@ package com.stuxo.notify.app;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ public class MainActivity extends ActionBarActivity {
     private boolean isAuthed;
     private String userName;
     SQLiteDatabase db;
-    private static final String PREFS_NAME = "NotifyPrefs";
     public static final String dbName = "notify";
 
     private ToDoListAdapter adapter;
@@ -43,15 +41,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-
-        if (settings.getBoolean("isFirstLaunch", false)){
-
-        }
-        editor.putBoolean("isLoggedIn", false);
-
 
         //db = this.openOrCreateDatabase(dbName, MODE_PRIVATE, null);
 
@@ -172,6 +161,8 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -196,7 +187,6 @@ public class MainActivity extends ActionBarActivity {
 
     private Notification createBasicNotification(String title, String text, PendingIntent pIntent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
-
 
         return builder
                 .setSmallIcon(R.drawable.ic_action_done)
