@@ -1,0 +1,25 @@
+CREATE TABLE to_do_item (
+  _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  text TEXT NOT NULL,
+  isComplete INTEGER NOT NULL
+);
+
+-- Further SQL statements are proceeded by an identifier. This will be used to name the constant
+-- in the generated Java code.
+select_by_text:
+SELECT *
+FROM to_do_item
+WHERE text = ?;
+
+delete_by_text:
+DELETE
+FROM to_do_item
+WHERE text = ?;
+
+delete_all:
+DELETE
+FROM to_do_item;
+
+select_all:
+SELECT *
+FROM to_do_item;

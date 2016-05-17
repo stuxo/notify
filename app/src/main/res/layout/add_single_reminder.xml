@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="?attr/colorPrimary"
-              android:weightSum="1">
+              android:orientation="vertical"
+              android:paddingEnd="10dp"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp"
+              android:paddingStart="10dp">
 
     <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtReminderDesc"
-            android:hint="What do you want to remember?"
-            android:gravity="center_vertical|center_horizontal"
-            android:inputType="textAutoCorrect|textCapSentences"
-            android:imeOptions="actionGo"
-            android:background="?attr/colorPrimary"
-            android:textSize="24dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            />
+        android:id="@+id/txtReminderDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:hint="What do you want to remember?"
+        android:imeOptions="actionGo"
+        android:inputType="textAutoCorrect|textCapSentences"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:textSize="@dimen/text_size_medium"
+        />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/Base.Widget.AppCompat.ActionButton"
-            android:text="Remind me!"
-            android:id="@+id/btnCreateReminder"
-            android:textColor="@color/button_material_light"
-            android:elevation="10dp"
-            android:paddingBottom="5dp"
-            android:textSize="30dp"
-            />
+        android:id="@+id/btnCreateReminder"
+        style="?android:attr/actionButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:text="Remind me!"
+        android:textSize="@dimen/text_size_medium"
+        />
 
 </LinearLayout>

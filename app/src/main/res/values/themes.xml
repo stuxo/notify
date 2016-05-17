@@ -1,33 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<style name="MyAppTheme" parent="AppTheme.Base"/>
 
-<style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="colorPrimary">@color/brightblue</item>
-    <item name="colorPrimaryDark">@color/darkblue</item>
-    <item name="android:windowNoTitle">true</item>
-    <item name="windowActionBar">false</item>
-    <item name="actionBarStyle">@android:style/Widget.Holo.ActionBar</item>
-    <item name="android:windowBackground">?attr/colorPrimaryDark</item>
-    <item name="android:windowTranslucentStatus">true</item>
-    <item name="android:windowContentOverlay">@null</item>
-    <item name="android:editTextStyle">@style/RobotoEditTextStyle</item>
-    <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
-    <item name="android:textColorPrimary">@color/abc_primary_text_material_light</item>
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
 
-</style>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <!--<item name="android:windowBackground">?attr/colorPrimaryDark</item>-->
+        <item name="android:textColorPrimary">@color/abc_primary_text_material_light</item>
 
-    <style name="RobotoEditTextStyle" parent="android:Widget.Holo.Light.EditText">
-        <item name="android:fontFamily">sans-serif-light</item>
-    </style>
-
-    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button.Borderless">
-        <item name="android:fontFamily">sans-serif-light</item>
-    </style>
-
-
-    <style name="RobotoActionBarStyle" parent="android:style/Theme.Holo.Light">
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="colorPrimary">@color/brightblue</item>
+        <item name="colorPrimaryDark">@color/darkblue</item>
     </style>
 
 </resources>

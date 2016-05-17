@@ -1,38 +1,27 @@
 <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:fitsSystemWindows="true"
+    >
 
-    <!--<android.support.v4.widget.DrawerLayout-->
-            <!--android:id="@+id/drawer_layout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:paddingBottom="50dp">-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
 
+        <include layout="@layout/toolbar"/>
 
-        <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/brightblue">
+        <include layout="@layout/add_single_reminder"/>
 
-            <include layout="@layout/toolbar" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/cardList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-            <include layout="@layout/add_single_reminder"/>
+    </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/cardList"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true">
-            </android.support.v7.widget.RecyclerView>
-
-
-
-        </LinearLayout>
-
-    <!--</android.support.v4.widget.DrawerLayout>-->
 </FrameLayout>
 

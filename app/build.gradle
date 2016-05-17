@@ -1,21 +1,23 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
     }
 }
-
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.squareup.sqldelight'
 
 repositories {
         jcenter()
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.0.0"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
 
     lintOptions {
         abortOnError false
@@ -24,9 +26,9 @@ android {
     defaultConfig {
         applicationId "com.stuxo.notify.app"
         minSdkVersion 16
-        targetSdkVersion 19
-        versionCode 1
-        versionName "0.1.1"
+        targetSdkVersion 23
+        versionCode 2
+        versionName "0.2.0"
     }
     buildTypes {
         release {
@@ -41,8 +43,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.github.satyan:sugar:1.3'
-    compile 'com.android.support:appcompat-v7:21.+'
-    compile 'com.android.support:cardview-v7:+'
-    compile 'com.android.support:recyclerview-v7:+'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
 }

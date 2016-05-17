@@ -1,10 +1,13 @@
 package com.stuxo.notify.controller;
 
+import android.graphics.Paint;
+import android.sax.TextElementListener;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.stuxo.notify.app.R;
 import com.stuxo.notify.model.ToDoItem;
@@ -48,7 +51,11 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 ToDoItem item = items.get(i);
                 CheckBox done = (CheckBox) v.findViewById(R.id.toDoItemDoneCheckBox);
                 item.setIsComplete(done.isChecked());
-
+                if (done.isChecked()){
+                    viewHolder.desc.setPaintFlags(viewHolder.desc.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    viewHolder.desc.setPaintFlags(viewHolder.desc.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                }
             }
         });
     }

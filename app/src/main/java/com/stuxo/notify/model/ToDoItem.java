@@ -1,10 +1,8 @@
 package com.stuxo.notify.model;
 
-import com.orm.SugarRecord;
-
 import java.util.Date;
 
-public class ToDoItem extends SugarRecord<ToDoItem> {
+public class ToDoItem {
 
     private int Id;
     private String text;
@@ -17,6 +15,16 @@ public class ToDoItem extends SugarRecord<ToDoItem> {
 //        this.isComplete = false;
 //       // alarmTime = null;
 //    }
+
+
+    public ToDoItem(boolean isComplete, String text, int id) {
+        this.isComplete = isComplete;
+        this.text = text;
+        Id = id;
+    }
+
+    public ToDoItem() {
+    }
 
     public boolean getIsComplete(){
         return isComplete;
